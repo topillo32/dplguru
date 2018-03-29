@@ -1,0 +1,36 @@
+<md-card class="md-padding">
+  <md-card-header layout="row" layout-xs="column" layout-align="space-between center" class="login-form" ng-init="currentNavItem=1">
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links"> <img src="imagenes/G4PL-Logo.jpg" ng-controller="loginCtrl" ng-click="cambioVista(2)" style="height: 50px;"> </md-nav-bar>
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <h1>WHAT do you want to do?</h1>
+    </md-nav-bar>
+    <md-nav-bar>
+      <md-menu>
+        <md-button class="md-primary" ng-mouseenter="$mdMenu.open()">
+          <h3>Hello {{userName}}</h3>
+        </md-button>
+        <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="cambioVista(4)">Change Password</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="personaLogout()">LogOut</md-button>
+          </md-menu-item>
+      </md-menu>
+    </md-nav-bar>
+  </md-card-header>
+</md-card>
+<md-content md-theme="docs-dark" flex>
+  <div layout="row" layout-xs="column" layout-align="center center">
+    <div class="md-padding" flex="50">
+      <h3>Search Section</h3>
+      <p>In this section you can look for an entity or person with whom you should not make treaties. You can search by term, country, company name, etc. Leaving thus a register that you can visualize whenever you want.</p>
+      <md-button class="md-primary md-raised" ng-click="cambioVista(1)">SEARCH</md-button>
+    </div>
+    <div class="md-padding" flex="50" ng-if="loginPermisos == '1' || loginPermisos == '0'">
+      <h3>Admin Section</h3>
+      <p>In the admin section you can create accounts, companies or modify user data.</p>
+      <md-button class="md-primary md-raised" ng-click="cambioVista(3)">ADMIN</md-button>
+    </div>
+  </div>
+</md-content>

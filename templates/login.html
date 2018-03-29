@@ -1,0 +1,17 @@
+<md-content layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="login-form">
+  <md-card flex="60" style="box-shadow: none;">
+    <div layout="row" layout-align="center center"> <img layout-align="center center" ng-src="imagenes/G4PL-Logo.jpg" class="md-card-image"> </div> <br> <br>
+    <md-card-content style="border-style: ridge;">
+      <form name="Form">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2><span>Login Form</span></h2>
+          </div>
+        </md-toolbar>
+        <md-input-container class="md-block"> <label>Login</label> <input type="text" name="email" ng-model="user.email" placeholder="login" /> </md-input-container>
+        <md-input-container class="md-block"> <label>Password</label> <input type="password" name="password" ng-model="user.password" placeholder="password" /> </md-input-container>
+        <md-button ng-disabled="!Form.$valid" ng-click="personaLogin(user)" class="md-raised md-primary"> &nbsp Login &nbsp </md-button>
+        <!-- <md-button ng-click="resetPass(user.email)" class="md-raised md-primary" href=""> &nbsp Forgot Password &nbsp </md-button> -->
+      </form> <a href="#" ng-click="resetPass(user.email)" style="text-decoration:none;">&nbsp Forgot Password &nbsp </a> </md-card-content>
+  </md-card>
+</md-content>

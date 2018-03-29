@@ -1,0 +1,80 @@
+<md-dialog>
+  <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+      <h2> <span flex>Consolidated Screening List Detail</span> </h2> <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon class="material-icons" aria-label="Close dialog">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <md-table-container layout-padding layout-align="center center">
+      <table md-table>
+        <thead md-head flex>
+          <th md-column>Name</th>
+          <th md-column>Source</th>
+          <th md-column>Federal Register Notice</th>
+          <th md-column>End Date</th>
+          <th md-column>Start Date</th>
+          <th md-column>Classification of the entity</th>
+        </thead>
+        <tbody md-body flex>
+          <tr ng-repeat="g in searchDetalle | filter: {id : id}">
+            <td md-cell>{{ g.name}}</td>
+            <td md-cell>{{g.source}}</td>
+            <td md-cell>{{g.federal_register_notice}} </td>
+            <td md-cell>{{g.end_date}} </td>
+            <td md-cell>{{g.start_date}} </td>
+            <td md-cell>{{g.type}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-container layout-padding layout-align="center center">
+      <table md-table>
+        <thead md-head flex>
+          <th md-column>Address</th>
+          <th md-column>City</th>
+          <th md-column>Country</th>
+        </thead>
+        <tbody md-body flex ng-repeat="g in searchDetalle | filter: {id : id} track by searchDetalle.id">
+          <tr ng-repeat="gdir in g.addresses track by $index">
+            <td md-cell>{{gdir.address}} </td>
+            <td md-cell>{{gdir.city}} </td>
+            <td md-cell ng-repeat="c in country | filter :{code : gdir.country }"> {{c.name}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-container ng-repeat="gd in searchDetalle | filter: {id : id} track by searchDetalle.id">
+      <table md-table>
+        <thead md-head flex>
+          <th md-column ng-show="gd.alt_names.length > 0">Alternative Names</th>
+        </thead>
+        <tbody md-body flex>
+          <tr ng-repeat="item in gd.alt_names track by $index">
+            <td md-cell> {{item}} </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-container ng-if="fdr">
+      <table md-table>
+        <thead md-head flex>
+          <th md-column>Volume</th>
+          <th md-column>Page</th>
+          <th md-column>Publication Date</th>
+        </thead>
+        <tbody md-body>
+          <tr ng-repeat="federal in fdr track by $index">
+            <td md-cell>{{federal.volume}}</td>
+            <td md-cell> <a ng-href="http://www.uptodateregs.com/_data/TDO_FRnotice.asp?date={{fechaAjust(federal.publication_date)}}&pg={{federal.start_page}}" target="_blank">
+                {{federal.start_page}}
+              </a> </td>
+            <td md-cell>{{federal.publication_date}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+  </md-dialog-content>
+</md-dialog>

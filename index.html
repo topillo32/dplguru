@@ -1,0 +1,23 @@
+<html lang="es" ng-app="app">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-control">
+  <title>SOFTWARE USA</title>
+  <link rel="stylesheet" href="libs/css/all.css"> </head>
+
+<body ng-controller="appCtrl" layout="row" ng-cloak="">
+  <div id="main_page" layout="column" flex>
+    <div id="layout_navigation" layout="column" flex>
+      <div class="contet_container" layout="column" flex>
+        <div ng-view class="content_body_page" layout="column" flex></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="libs/js/angular.js"></script>
+  <script defer type="text/javascript" src="libs/js/scripts.js"></script>
+  <script defer type="text/javascript" src="libs/js/software.js"></script>
+</body>
+
+</html>

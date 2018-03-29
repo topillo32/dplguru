@@ -1,0 +1,228 @@
+<md-card>
+  <md-card-header layout="row" layout-xs="column" layout-align="space-between center" class="login-form" ng-init="currentNavItem=1">
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" ng-init="currentF()"> <img src="imagenes/G4PL-Logo.jpg" ng-controller="loginCtrl" ng-click="cambioVista(2)" style="height: 50px;"> </md-nav-bar>
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="1" ng-if="loginPermisos == '1' || loginPermisos == '0'"> Create Users </md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" name="2" ng-if="loginPermisos == '1' || loginPermisos == '0'"> Disable User </md-nav-item>
+      <!-- <md-nav-item md-nav-click="goto('page3')" name="3"> Delete Users </md-nav-item> -->
+      <md-nav-item md-nav-click="goto('page3')" name="3" ng-if="loginPermisos == '0'"> Disable Companies </md-nav-item>
+      <md-nav-item md-nav-click="goto('page4')" name="4" ng-if="loginPermisos == '0'"> Adds Companies </md-nav-item>
+    </md-nav-bar>
+    <md-nav-bar>
+      <md-menu>
+        <md-button class="md-primary" ng-mouseenter="$mdMenu.open()">
+          <h3>Hello {{userName}}</h3>
+        </md-button>
+        <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="cambioVista(4)">Change Password</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="personaLogout()">LogOut</md-button>
+          </md-menu-item>
+      </md-menu>
+    </md-nav-bar>
+  </md-card-header>
+</md-card>
+<md-content md-theme="docs-dark" flex>
+  <div layout="row" layout-align="center center">
+    <div ng-if="currentNavItem == 1" flex="50">
+      <form name="formUsuarios" ng-submit="createUser()" flex>
+        <table md-table>
+          <tbody md-body>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>Email</h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <input name="email" type="email" ng-model="user.email" required style="width: 100%" placeholder="Enter your email"> </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>User Name</h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <input name="userName" ng-model="user.userName" required placeholder="Enter your User Name"> </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>System Permission</h3>
+              </td>
+              <td md-cell>
+                <md-input-container>
+                  <md-select ng-model="user.permisos">
+                    <md-option ng-value="1" ng-if="loginPermisos == 0">Admin</md-option>
+                    <md-option ng-value="2" ng-selected="true">User</md-option>
+                  </md-select>
+                </md-input-container>
+              </td>
+            </tr>
+            <tr ng-if="loginPermisos == 0">
+              <td md-cell style="color:#283593;">
+                <h3>Company</h3>
+              </td>
+              <td md-cell>
+                <md-input-container>
+                  <md-select ng-model="user.company">
+                    <md-option ng-value="emp.idCompany" ng-selected="$last" ng-repeat="emp in empresaSel track by $index">{{emp.company}}</md-option>
+                  </md-select>
+                </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>Password</h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <label>Required</label> <input name="passwd" type="password" ng-model="user.passwd" minlength="10" maxlength="12" md-maxlength="12" required>
+                  <p ng-show="formUsuarios.passwd.$error.minlength" class="alertas-formularios">Password must have 10 characters</p>
+                </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>Repeat Password</h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <label>Required</label> <input name="repasswd" type="password" ng-model="user.repasswd" minlength="10" maxlength="12" md-maxlength="12" required>
+                  <p ng-show="formUsuarios.repasswd.$error.minlength" class="alertas-formularios">Repeat Password must have 10 characters</p>
+                </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell></td>
+              <td md-cell>
+                <md-button type="submit" ng-disabled="!formUsuarios.$valid" class="md-raised md-primary">Create</md-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div ng-if="currentNavItem == 2" ng-init="readUsers()">
+      <table md-table>
+        <thead>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>Disable/Enable</th>
+        </thead>
+        <tbody md-body>
+          <tr ng-repeat="u in userSel">
+            <td md-cell>{{u.userName}}</td>
+            <td md-cell>{{u.email}}</td>
+            <td md-cell ng-init="enabled = u.activo == 1? true : false">
+              <md-switch class="md-secondary" ng-model="enabled" ng-change="updateActivo(enabled,u.email)"></md-switch>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="currentNavItem == 3" ng-init="readCompanies()">
+      <table md-table>
+        <thead>
+          <th>Name</th>
+          <th>Company</th>
+          <th>Street</th>
+          <th>Phone</th>
+          <th>Disable/Enable</th>
+        </thead>
+        <tbody md-body>
+          <tr ng-repeat="c in companySel">
+            <td md-cell>{{c.name}}</td>
+            <td md-cell>{{c.company}}</td>
+            <td md-cell>{{c.street}}</td>
+            <td md-cell>{{c.phone}}</td>
+            <td md-cell ng-init="enabledE = c.activo == 1? true : false">
+              <md-switch class="md-secondary" ng-model="enabledE" ng-change="updateActivoEmpresa(enabledE,c.idCompany)"></md-switch>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-if="currentNavItem == 4" flex="50">
+      <form name="formEmpresa" ng-submit="createEmpresa(empr)" flex>
+        <table md-table>
+          <tbody md-body>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>Company Name</h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <input name="name" type="text" ng-model="empr.name" required placeholder="Enter your Company Name"> </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <td md-cell style="color:#283593;">
+                <h3>Company </h3>
+              </td>
+              <td md-cell>
+                <md-input-container class="md-block" flex-gt-xs> <input name="company" ng-model="empr.company" required placeholder="Enter your User Company"> </md-input-container>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>Title</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container class="md-block" flex-gt-xs> <input name="titulo" type="text" ng-model="empr.titulo" placeholder="Enter your Titulo"> </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>Street</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container class="md-block" flex-gt-xs> <label>Required</label> <input name="street" type="text" ng-model="empr.street" placeholder="Enter your Street" required> </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>City</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container class="md-block" flex-gt-xs> <label>Required</label> <input name="city" type="text" ng-model="empr.city" placeholder="Enter your City" required> </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>Country</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container>
+                    <md-select ng-model="empr.country" data-md-container-class="selectd md-cell emoSelectHeader">
+                      <md-option ng-repeat="c in country" ng-value="c.code" ng-selected="$first">{{c.name}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>Zip Code</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container class="md-block" flex-gt-xs> <input name="zipcode" type="text" ng-model="empr.zipcode" placeholder="Enter your Zipcode" required> </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell style="color:#283593;">
+                  <h3>Phone</h3>
+                </td>
+                <td md-cell>
+                  <md-input-container class="md-block" flex-gt-xs> <input name="phone" type="number" ng-model="empr.phone" placeholder="Enter your Phone" required> </md-input-container>
+                </td>
+              </tr>
+              <tr>
+                <td md-cell></td>
+                <td md-cell>
+                  <md-button type="submit" ng-disabled="!formEmpresa.$valid" class="md-raised md-primary">Create</md-button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</md-content>

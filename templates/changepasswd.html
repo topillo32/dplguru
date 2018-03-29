@@ -1,0 +1,22 @@
+<div layout="row" layout-align-xs="center start" layout-align-gt-xs="center center" flex>
+  <md-card>
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools">
+        <h2>New Password</h2>
+      </div>
+    </md-toolbar>
+    <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="isLoading"></md-progress-linear>
+    <md-card-content>
+      <form name="ChangeForm" ng-submit="generatePassLogin()">
+        <md-input-container class="md-block md-icon-float"> <label>Password</label>
+          <md-icon>lock</md-icon> <input ng-model="password" type="password" required /> </md-input-container>
+        <md-input-container class="md-block md-icon-float"> <label>Confirm Password</label>
+          <md-icon>lock</md-icon> <input ng-model="password2" type="password" required /> </md-input-container>
+        <md-input-container layout="row" layout-align="center center">
+          <md-button type="submit" ng-disabled="password !== '' && password !== password2" class="md-raised md-primary"> <span ng-hide="isLoading">Change Password</span> <span ng-show="isLoading" layout="row" layout-align="center center">
+              <md-progress-circular md-mode="indeterminate" md-diameter="20px"></md-progress-circular>
+            </span> </md-button>
+        </md-input-container> <input type="hidden" ng-model="idUser" /> <input type="hidden" ng-model="keySecret" /> </form>
+    </md-card-content>
+  </md-card>
+</div>

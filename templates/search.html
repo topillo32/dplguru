@@ -1,0 +1,149 @@
+<md-card>
+  <md-card-header layout="row" layout-xs="column" layout-align="space-between center" class="login-form" ng-init="currentNavItem=1">
+    <md-nav-bar nav-bar-aria-label="navigation links" ng-init="currentF()"> <img src="imagenes/G4PL-Logo.jpg" ng-controller="loginCtrl" ng-click="cambioVista(2)" style="height: 50px;"> </md-nav-bar>
+    <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="1">Search Web</md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" ng-click="muestraSearches(2)" ng-if="permiso == 1 || permiso == 2 || permiso == 0 " name="2">Search List</md-nav-item>
+      <md-nav-item md-nav-click="goto('page3')" ng-click="muestraSearches(3)" ng-if="permiso == 1" name="3">Search list by company</md-nav-item>
+      <md-nav-item md-nav-click="goto('page4')" ng-click="muestraSearches(4)" ng-if="permiso == 0 " name="4">Search All List</md-nav-item>
+      <md-nav-item md-nav-click="goto('page5')" ng-click="muestraSearches(5)" ng-if="permiso == 0 " name="5">Search list by company</md-nav-item>
+    </md-nav-bar>
+    <md-nav-bar>
+      <md-menu>
+        <md-button class="md-primary" ng-mouseenter="$mdMenu.open()">
+          <h3>Hello {{userName}}</h3>
+        </md-button>
+        <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="cambioVista(4)">Change Password</md-button>
+          </md-menu-item>
+          <md-menu-item>
+            <md-button class="md-primary" ng-controller="loginCtrl" ng-click="personaLogout()">LogOut</md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+    </md-nav-bar>
+  </md-card-header>
+</md-card>
+<md-content layout="column" ng-if="currentNavItem == 1" flex>
+  <div flex-offset="20">
+    <form name="" ng-submit="traeDatosAdvance(term,typeEntry,nombre,address,pais,depar)" layout="column" layout-padding flex="75">
+      <div layout="row" layout-align="space-between center"> <span>Name: </span> <input type="text" ng-model="nombre" placeholder="Type your search by name and alt names fields" flex="80"> </div>
+      <div layout="row" layout-align="space-between center"> <span>Address: </span> <input ng-model="address" placeholder="Type your search by name and alt names fields" arial-label="address" flex="80"> </div>
+      <div layout="row" layout-align="space-between center"> <span>Country: </span> <select ng-model="pais" data-md-container-class="selectd md-cell emoSelectHeader" flex="80">
+          <!-- <md-select-header class="demo-select-header"> <input ng-model="searchTerm" type="search" placeholder="Find a Country.." class="demo-header-searchbox md-text" arial-label="" ng-keydown="vg($event)"> </md-select-header> -->
+          <option ng-repeat="c in country | filter:searchTerm" ng-value="c.code">{{c.name}}</option>
+        </select> </div>
+      <div layout="row" layout-align="space-between center"> <span>Source Abbreviation: </span> <select ng-model="depar" data-md-container-class="selectd md-cell emoSelectHeader" flex="80">
+          <!-- <md-select-header class="demo-select-header"> <input ng-model="searchTerm" type="search" placeholder="Search by Source Abbreviation.." class="demo-header-searchbox md-text" ng-keydown="vg($event)"> </md-select-header> -->
+          <option ng-repeat="c in departamentos | filter:searchTerm" ng-value="c.code">{{c.name}}</option>
+        </select> </div>
+      <div layout="row" layout-align="space-between center"> <span>Keyword: </span> <input ng-model="term" placeholder="Type your search by keyword" arial-label="keyword" flex="80"> </div>
+      <div layout="row" layout-align="space-between center"> <span>Entry: </span> <input ng-model="typeEntry" placeholder="Type your search by type of the entry" arial-label="keyword" flex="80"> </div>
+      <div layout="row" layout-align="center center">
+        <md-button type="submit" class="md-raised md-primary" ng-click="currentPage = 0">Search</md-button>
+      </div>
+    </form>
+  </div>
+  <div flex-offset="33">
+    <h3 layout-align="center center" ng-show="greetingTotal && great != 0">Matches found {{contadorMatches}}</h3>
+    <md-divider flex="70" ng-show="greetingTotal && great != 0" style="border-color:#1A237E;"></md-divider>
+    <md-list ng-repeat="g in greeting" class="md-list" flex="70" ng-mouseover="altName = true" ng-mouseleave="altName = false" layout="row" ng-click="mostrarDetallado($event,greeting[$index])">
+      <md-list-item class="md-3-line">
+        <div class="md-list-item-text">
+          <h3><b>{{ g.name }}</b></h3>
+          <h4>{{ g.source }}</h4>
+          <p>{{ g.addresses[0].address}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line" ng-show="g.alt_names.length > 0 && altName">
+        <div class="md-list-item-text"> <b>Alternative Names</b>
+          <p ng-repeat="galt in g.alt_names"> - {{galt}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+    <h1 ng-if="greeting && great == 0"> No matches founds </h1>
+    <div flex-offset="20">
+      <md-button class="btn" ng-show="great != 0  && greetingTotal" ng-disabled="currentPage == 0" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,1)"> Previous </md-button> <a ng-show="great != 0 && greetingTotal">
+              <b>{{page + 1 }}/{{greetingTotal}}</b>
+          </a>
+      <md-button class="btn" ng-show="great != 0 && greetingTotal" ng-disabled="currentPage >= greetingTotal - 1" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,2)"> Next </md-button>
+    </div>
+  </div>
+</md-content>
+<md-card layout="column" flex ng-if="currentNavItem == 2 || currentNavItem == 3 || currentNavItem == 4" flex>
+  <div layout="row" layout-align="end center" ng-show="myListSearch.length > 0"> <i class="material-icons">search</i>
+    <div layout-padding> <input type="text" ng-model="filtrar" placeholder="Type your search by name and alt names fields"> </div>
+  </div>
+  <md-table-container class="md-padding" ng-show="myListSearch.length > 0" flex>
+    <table md-table>
+      <thead md-head>
+        <th md-column ng-show="currentNavItem != 2">EMAIL</th>
+        <th md-column ng-show="currentNavItem != 2">USER</th>
+        <th md-column>DATE</th>
+        <th md-column>MATCHES</th>
+        <th md-column>TERM</th>
+        <th md-column>NAME</th>
+        <th md-column>ADDRESS</th>
+        <th md-column>COUNTRY</th>
+        <th md-column>TYPE</th>
+        <th md-column>SOURCE</th>
+      </thead>
+      <tbody md-body>
+        <tr ng-repeat="s in myListSearch | filter : filtrar">
+          <td md-cell ng-show="currentNavItem != 2" nowrap> {{s.userName}}</td>
+          <td md-cell ng-show="currentNavItem != 2" nowrap> {{s.email}}</td>
+          <td md-cell nowrap> {{s.date}}</td>
+          <td md-cell nowrap>{{s.matches}}</td>
+          <td md-cell nowrap>{{!s.term ? '-' : s.term }}</td>
+          <td md-cell nowrap>{{!s.name ? '-' : s.name}}</td>
+          <td md-cell nowrap>{{!s.address? '-': s.address}}</td>
+          <td md-cell nowrap>{{paisNombre(s.country)}}</td>
+          <td md-cell nowrap>{{!s.type? '-': s.type}}</td>
+          <td md-cell nowrap>{{sourceNombre(s.source)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="query.limit" md-limit-options="[10, 50 , 100]" md-page="query.page" md-total="{{contador}}" md-on-paginate="paginate" md-page-select ng-if="myListSearch.length > 0"></md-table-pagination>
+  <div layout="row" layout-align="center center" ng-if="myListSearch.length == 0">
+    <h1>No Data Found</h1>
+  </div>
+</md-card>
+<md-card layout="column" ng-if="currentNavItem == 5" flex>
+  <md-content layout="column" ng-repeat="s in myListSearch2 track by $index" ng-if="myListSearch2[$index].detalle.length > 0" flex>
+    <md-table-container flex>
+      <md-subheader class="md-primary"> <span>Company {{s.name}}</span> </md-subheader>
+      <table md-table>
+        <thead md-head>
+          <th md-column>EMAIL</th>
+          <th md-column>USER</th>
+          <th md-column>DATE</th>
+          <th md-column>MATCHES</th>
+          <th md-column>TERM</th>
+          <th md-column>NAME</th>
+          <th md-column>ADDRESS</th>
+          <th md-column>COUNTRY</th>
+          <th md-column>TYPE</th>
+          <th md-column>SOURCE</th>
+        </thead>
+        <tbody md-body>
+          <tr ng-repeat="sd in myListSearch2[$index].detalle | filter : filtrar">
+            <td md-cell nowrap> {{sd.userName}}</td>
+            <td md-cell nowrap> {{sd.email}}</td>
+            <td md-cell nowrap> {{sd.date}}</td>
+            <td md-cell nowrap>{{sd.matches}}</td>
+            <td md-cell nowrap>{{!sd.term ? '-' : sd.term }}</td>
+            <td md-cell nowrap>{{!sd.name ? '-' : sd.name}}</td>
+            <td md-cell nowrap>{{!sd.address? '-': sd.address}}</td>
+            <td md-cell nowrap>{{ paisNombre(sd.country) }}</td>
+            <td md-cell nowrap>{{!sd.type? '-': sd.type}}</td>
+            <td md-cell nowrap>{{sourceNombre(sd.source)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-pagination md-limit="query2[$index].limit" md-limit-options="[10, 50, 100]" md-page="query2[$index].page" md-total="{{contador2[$index].contador}}" md-on-paginate="paginate" md-page-select></md-table-pagination>
+    <md-divider></md-divider>
+  </md-content>
+</md-card>

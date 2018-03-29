@@ -1,0 +1,28 @@
+{
+  "name": "USA",
+  "private": true,
+  "scripts": {
+    "prod": "gulp --production",
+    "dev": "gulp watch"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^6.0.0-14"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-aria": "^1.6.4",
+    "angular-jwt": "^0.1.9",
+    "angular-material": "^1.1.3",
+    "angular-material-data-table": "^0.10.10",
+    "angular-messages": "^1.6.4",
+    "angular-resource": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "angular-sanitize": "^1.6.4",
+    "angular-storage": "0.0.15",
+    "gulp-jsbeautifier": "^2.1.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1"
+  }
+}

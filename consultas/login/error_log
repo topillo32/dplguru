@@ -1,0 +1,9 @@
+[23-Mar-2018 03:43:29 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[23-Mar-2018 03:44:35 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[23-Mar-2018 03:55:20 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[23-Mar-2018 15:28:21 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[23-Mar-2018 16:15:40 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[23-Mar-2018 16:15:49 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[24-Mar-2018 19:21:14 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[28-Mar-2018 15:44:41 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
+[28-Mar-2018 16:22:46 UTC] PHP Warning:  openssl_decrypt(): IV passed is only 2 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in /home/dplguru/public_html/objects/encriptacion.php on line 18
