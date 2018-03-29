@@ -10,11 +10,11 @@ $users->email = $data->email;
 if (isset($auth->email) && $auth->email != "") {
   $users->readOne();
 	$tokenuser = $auth->createPassInicial();
-	$mensaje = 'Por favor haga click en el siguiente <a href="https://global.contal.cl/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> para generar una clave';
-	$email = new Email("global");
+	$mensaje = 'Por favor haga click en el siguiente <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> para generar una clave';
+	$email = new Email("resetpassword");
 	$email->asunto = "Generar clave de usuario";
 	$email->razonSocialRecibe = $users->userName;
-	$email->razonSocialEnvia = "global";
+	$email->razonSocialEnvia = "Dplguru";
 	$email->email = $data->email;
 	$email->mensaje = $mensaje;
 	$email->enviar();

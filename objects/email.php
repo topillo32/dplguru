@@ -11,15 +11,15 @@ class Email {
 	public $mensaje;
 
 	public function __construct($alias) {
-		$this->username = $alias . '@contalerp.cl';
-		$this->password = 'DKQoI^R0B7;R';
+		$this->username = $alias . '@dplguru.com';
+		$this->password = '3m4ildp16uru';
 		$this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
 	}
 
 
   public function enviar() {
     try {
-      $transport = Swift_SmtpTransport::newInstance('email-smtp.eu-west-1.amazonaws.com', '465', 'ssl')->setUsername('AKIAIYZWGUCYTZIB22XQ')->setPassword('AgO+0wbL0vTrPVq3HNw+FjjfU32WFTUaYNa0HuVu/jGt');
+      $transport = Swift_SmtpTransport::newInstance('mail.dplguru.com', '465', 'ssl')->setUsername($this->username)->setPassword($this->password);
       $mailer = Swift_Mailer::newInstance($transport);
       if (isset($this->file)) {
         $message = Swift_Message::newInstance($this->asunto)->setFrom(array(

@@ -80,7 +80,7 @@ class Auth {
 	}
 
 	public function createPassInicial() {
-		$this->encriptacion->data = 'global1234';
+		$this->encriptacion->data = 'dplguru1234';
 		$pass = $this->encriptacion->encriptar();
 		$this->data = $pass;
 		$this->usuarios->email = $this->email;
