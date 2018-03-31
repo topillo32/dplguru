@@ -6,6 +6,9 @@ $auth = new Auth($db);
 $users = new Usuarios($db);
 $data = json_decode(file_get_contents("php://input"));
 $auth->email = $data->email;
+echo json_encode(array(
+		"datos" => $data->email,
+	));
 $users->email = $data->email;
 if (isset($auth->email) && $auth->email != "") {
   $users->readOne(); 
