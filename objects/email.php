@@ -14,6 +14,9 @@ class Email {
 	public $mensaje;
 
 	public function __construct($alias) {
+    echo json_encode(array(
+        "Donde estoy" => "en EMAIL()",
+    ));
 		$this->username = $alias . '@dplguru.com';
 		$this->password = 'L@h)Mh^,5WiC';
 		$this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
