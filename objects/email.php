@@ -21,7 +21,11 @@ class Email {
 
   public function enviar() {
     try {
-      /*
+      echo json_encode(array(
+        "Estado" => "Enviando",
+        "desde" => $this->username,
+        "a" => $this->email,
+      ));
       $transport = Swift_SmtpTransport::newInstance('mail.dplguru.com', '465', 'ssl')->setUsername($this->username)->setPassword($this->password);
       $mailer = Swift_Mailer::newInstance($transport);
       if (isset($this->file)) {
@@ -40,26 +44,8 @@ class Email {
       if ($mailer->send($message)) {
         return true;
       }
-      return false; */
-
-      // Create the Transport
-      $transport = (new Swift_SmtpTransport('mail.dplguru.com', 587))
-        ->setUsername('resetpassword@dplguru.com')
-        ->setPassword('niBlYi{}]=mr')
-      ;
-
-      // Create the Mailer using your created Transport
-      $mailer = new Swift_Mailer($transport);
-
-      // Create a message
-      $message = (new Swift_Message('Mail de prueba'))
-        ->setFrom(['paolo@dplguru.com' => 'Paolo Espinoza'])
-        ->setTo(['paolo.patricioo@gmail.com' => 'Paolo Espinoza Vega'])
-        ->setBody('Este es un mail de prueba para mailserver swift')
-        ;
-
-      // Send the message
-      $result = $mailer->send($message);
+      return false; 
+      
       echo json_encode(array(
         "Estado" => "Enviado",
       ));
