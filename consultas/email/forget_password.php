@@ -8,7 +8,7 @@ $data = json_decode(file_get_contents("php://input"));
 $auth->email = $data->email;
 $users->email = $data->email;
 if (isset($auth->email) && $auth->email != "") {
-  $users->readOne();
+  $users->readOne(); 
 	$tokenuser = $auth->createPassInicial();
 	$mensaje = 'Por favor haga click en el siguiente <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> para generar una clave';
 	$email = new Email("resetpassword");
@@ -20,6 +20,7 @@ if (isset($auth->email) && $auth->email != "") {
 	$email->enviar();
 	echo json_encode(array(
 		"code" => 0,
+		"donde estoy" => "de forget a email",
 	));
 } else {
 	echo json_encode(array(

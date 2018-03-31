@@ -92,10 +92,10 @@
       $http.post('./consultas/email/forget_password.php', {
           'email': email
         })
-        .then(function (data) {
+        .then(function (email != NULL ) {
           $mdToast.showSimple("New password has been sent to your email");
         })
-        .catch(function (data) {
+        .catch(function (email) {
           $mdToast.showSimple("Write you e-mail");
         });
     }

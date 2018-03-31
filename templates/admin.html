@@ -52,7 +52,7 @@
               </td>
               <td md-cell>
                 <md-input-container>
-                  <md-select ng-model="user.permisos">
+                  <md-select ng-model="user.permisos" aria-label="Permisos">
                     <md-option ng-value="1" ng-if="loginPermisos == 0">Admin</md-option>
                     <md-option ng-value="2" ng-selected="true">User</md-option>
                   </md-select>
@@ -113,7 +113,7 @@
             <td md-cell>{{u.userName}}</td>
             <td md-cell>{{u.email}}</td>
             <td md-cell ng-init="enabled = u.activo == 1? true : false">
-              <md-switch class="md-secondary" ng-model="enabled" ng-change="updateActivo(enabled,u.email)"></md-switch>
+              <md-switch class="md-secondary" ng-model="enabled" ng-change="updateActivo(enabled,u.email)" aria-label="Estado"></md-switch>
             </td>
           </tr>
         </tbody>
@@ -135,7 +135,7 @@
             <td md-cell>{{c.street}}</td>
             <td md-cell>{{c.phone}}</td>
             <td md-cell ng-init="enabledE = c.activo == 1? true : false">
-              <md-switch class="md-secondary" ng-model="enabledE" ng-change="updateActivoEmpresa(enabledE,c.idCompany)"></md-switch>
+              <md-switch class="md-secondary" ng-model="enabledE" ng-change="updateActivoEmpresa(enabledE,c.idCompany) aria-label="Estado""></md-switch>
             </td>
           </tr>
         </tbody>
