@@ -11,7 +11,7 @@ echo json_encode(array(
 		"auth-email" => $auth->email,
 		"users-email" => $users->email,
 	));
-if (isset($auth->email)) {
+if (isset($auth->email) && $auth->email != "") {
   $users->readOne(); 
 	$tokenuser = $auth->createPassInicial();
 	$mensaje = 'Por favor haga click en el siguiente <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> para generar una clave';
