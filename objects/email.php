@@ -12,7 +12,7 @@ class Email {
 
 	public function __construct($alias) {
 		$this->username = $alias . '@dplguru.com';
-		$this->password = '3m4ildp16uru';
+		$this->password = 'L@h)Mh^,5WiC';
 		$this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
 	}
 
