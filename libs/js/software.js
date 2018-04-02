@@ -147,6 +147,7 @@ angular.module('app')
         })
         .then(function (response) {
           $mdToast.showSimple(response.data.records.datos);
+          load();
         });
     }
     $scope.readUsers = function () {
@@ -190,7 +191,7 @@ angular.module('app')
           'idCompany': id
         })
         .then(function (response) {
-          $mdToast.showSimple("User Updated");
+          $mdToast.showSimple("Company Updated");
         });
     };
     var load = function () {
@@ -282,7 +283,7 @@ angular.module('app')
           if (res.data.code === 0) {
             store.set('token', res.data.response.token);
             $scope.tokendata = jwtHelper.decodeToken(res.data.response.token);
-            $mdToast.showSimple("Wrong Login");
+            $mdToast.showSimple("Welcome");
             //$window.location.href = "/usa/#/search";
             $location.path("/index");
             $scope.$on('$locationChangeSuccess', function () {
@@ -290,7 +291,7 @@ angular.module('app')
             });
           }
           else {
-            $mdToast.showSimple(res.data.error);
+            $mdToast.showSimple("Something wrong with your credentials");
           }
         });
     };
@@ -313,18 +314,20 @@ angular.module('app')
       }
     }
     $scope.changePassLogin = function (passwd) {
+      console.log(passwd);
       if (passwd.oldPassword === passwd.newPassword) {
         $mdToast.showSimple("New and old password don't have to be the same");
       }
       else {
         if (passwd.newPassword === passwd.confPassword) {
           /* Compraracion de claves */
-          if ($scope.password !== "") {
+          if (passwd.newPassword !== "") {
             $http.post('./consultas/login/changePassword.php', {
                 'email': $rootScope.email,
                 'password': passwd.newPassword
               })
               .then(function (data) {
+                console.log(data.data);
                 if (data.data.code === 0) {
                   $mdToast.showSimple("The password has been successfully updated");
                   $window.location.reload();
@@ -348,21 +351,21 @@ angular.module('app')
       $http.post('./consultas/email/forget_password.php', {
           'email': email
         })
-        .then(function (data) {
+        .then(function (email) {
           $mdToast.showSimple("New password has been sent to your email");
         })
-        .catch(function (data) {
-          $mdToast.showSimple("Write you e-mail");
+        .catch(function (email) {
+          $mdToast.showSimple("Something wrong with your email");
         });
     }
     /* Cambio de clave */
     var token = $routeParams.token;
     var idpersona = $routeParams.id;
-    $scope.estado = "Desactivado";
+    $scope.estado = "Deactivated";
     if (token) {
       $scope.tokendata = jwtHelper.decodeToken(token);
       if (!isNaN(idpersona)) {
-        $scope.estado = "Activo";
+        $scope.estado = "Active";
         $scope.idUser = idpersona;
         $scope.keySecret = $scope.tokendata.aud;
       }

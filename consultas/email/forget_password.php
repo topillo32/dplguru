@@ -7,29 +7,14 @@ $users = new Usuarios($db);
 $data = json_decode(file_get_contents("php://input"));
 $auth->email = $data->email;
 $users->email = $data->email;
-echo json_encode(array(
-		"auth-email" => $auth->email,
-		"users-email" => $users->email,
-	));
 if (isset($auth->email) && $auth->email != "") {
-	echo json_encode(array(
-		"paso" => 0,
-		"donde estoy" => "entre a el if del mail",
-	));
-  	$users->readOne(); 
-  	echo json_encode(array(
-		"paso" => 1,
-		"donde estoy" => "antes de $auth->createPassInicial()",
-	));
+  	$users->readOne();
 	$tokenuser = $auth->createPassInicial();
-	echo json_encode(array(
-		"paso" => 2,
-		"donde estoy" => "asigno el tokenuser",
-	));
 	$mensaje = 'Por favor haga click en el siguiente <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> para generar una clave';
 	echo json_encode(array(
 		"paso" => 3,
 		"donde estoy" => "cuerpo del mail listo, ahora se instanciara la clase email",
+		"tokenuser" => $tokenuser,
 	));
 	$email = new Email("resetpassword");
 	echo json_encode(array(
@@ -43,12 +28,12 @@ if (isset($auth->email) && $auth->email != "") {
 	$email->mensaje = $mensaje;
 	echo json_encode(array(
 		"paso" => 1,
-		"donde estoy" => "Email() Enviado",
+		"donde estoy" => "Email() Enviar",
 	));
 	$email->enviar();
 	echo json_encode(array(
 		"code" => 0,
-		"donde estoy" => "Email enviado",
+		"donde estoy" => "cierre de forget.password",
 	));
 } else {
 	echo json_encode(array(

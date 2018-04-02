@@ -6,7 +6,7 @@ $auth = new Auth($db);
 $data = json_decode(file_get_contents("php://input"));
 $auth->email = $data->email;
 $auth->pass = $data->password;
-if ($auth->password != "") {
+if ($auth->password !== "") {
 	if ($auth->updatePassword()) {
 		echo json_encode(array(
 			"code" => 0,

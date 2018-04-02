@@ -17084,7 +17084,7 @@
 }.call(this));
 
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -17144,7 +17144,7 @@
  * {@link guide/accessibility Developer Guide}.
  */
 var ngAriaModule = angular.module('ngAria', ['ng']).
-                        info({ angularVersion: '1.6.5' }).
+                        info({ angularVersion: '1.6.4' }).
                         provider('$aria', $AriaProvider);
 
 /**
@@ -17488,7 +17488,7 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -19783,17 +19783,14 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
 
     var callbackRegistry = Object.create(null);
 
-    // remember that the `customFilter`/`classNameFilter` are set during the
-    // provider/config stage therefore we can optimize here and setup helper functions
-    var customFilter = $animateProvider.customFilter();
+    // remember that the classNameFilter is set during the provider/config
+    // stage therefore we can optimize here and setup a helper function
     var classNameFilter = $animateProvider.classNameFilter();
-    var returnTrue = function() { return true; };
-
-    var isAnimatableByFilter = customFilter || returnTrue;
-    var isAnimatableClassName = !classNameFilter ? returnTrue : function(node, options) {
-      var className = [node.getAttribute('class'), options.addClass, options.removeClass].join(' ');
-      return classNameFilter.test(className);
-    };
+    var isAnimatableClassName = !classNameFilter
+              ? function() { return true; }
+              : function(className) {
+                return classNameFilter.test(className);
+              };
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
@@ -19971,13 +19968,16 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
         options.to = null;
       }
 
-      // If animations are hard-disabled for the whole application there is no need to continue.
-      // There are also situations where a directive issues an animation for a jqLite wrapper that
-      // contains only comment nodes. In this case, there is no way we can perform an animation.
-      if (!animationsEnabled ||
-          !node ||
-          !isAnimatableByFilter(node, event, initialOptions) ||
-          !isAnimatableClassName(node, options)) {
+      // there are situations where a directive issues an animation for
+      // a jqLite wrapper that contains only comment nodes... If this
+      // happens then there is no way we can perform an animation
+      if (!node) {
+        close();
+        return runner;
+      }
+
+      var className = [node.getAttribute('class'), options.addClass, options.removeClass].join(' ');
+      if (!isAnimatableClassName(className)) {
         close();
         return runner;
       }
@@ -19986,11 +19986,12 @@ var $$AnimateQueueProvider = ['$animateProvider', /** @this */ function($animate
 
       var documentHidden = $$isDocumentHidden();
 
-      // This is a hard disable of all animations the element itself, therefore  there is no need to
-      // continue further past this point if not enabled
+      // this is a hard disable of all animations for the application or on
+      // the element itself, therefore  there is no need to continue further
+      // past this point if not enabled
       // Animations are also disabled if the document is currently hidden (page is not visible
       // to the user), because browsers slow down or do not flush calls to requestAnimationFrame
-      var skipAnimations = documentHidden || disabledElementsLookup.get(node);
+      var skipAnimations = !animationsEnabled || documentHidden || disabledElementsLookup.get(node);
       var existingAnimation = (!skipAnimations && activeAnimationsLookup.get(node)) || {};
       var hasExistingAnimation = !!existingAnimation.state;
 
@@ -21624,7 +21625,7 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
   isFunction  = angular.isFunction;
   isElement   = angular.isElement;
 })
-  .info({ angularVersion: '1.6.5' })
+  .info({ angularVersion: '1.6.4' })
   .directive('ngAnimateSwap', ngAnimateSwapDirective)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
@@ -57648,7 +57649,7 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 
 })(window, window.angular);;window.ngMaterial={version:{full: "1.1.4"}};
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -57967,78 +57968,27 @@ function $SanitizeProvider() {
     return obj;
   }
 
-  /**
-   * Create an inert document that contains the dirty HTML that needs sanitizing
-   * Depending upon browser support we use one of three strategies for doing this.
-   * Support: Safari 10.x -> XHR strategy
-   * Support: Firefox -> DomParser strategy
-   */
-  var getInertBodyElement /* function(html: string): HTMLBodyElement */ = (function(window, document) {
-    var inertDocument;
-    if (document && document.implementation) {
-      inertDocument = document.implementation.createHTMLDocument('inert');
+  var inertBodyElement;
+  (function(window) {
+    var doc;
+    if (window.document && window.document.implementation) {
+      doc = window.document.implementation.createHTMLDocument('inert');
     } else {
       throw $sanitizeMinErr('noinert', 'Can\'t create an inert html document');
     }
-    var inertBodyElement = (inertDocument.documentElement || inertDocument.getDocumentElement()).querySelector('body');
+    var docElement = doc.documentElement || doc.getDocumentElement();
+    var bodyElements = docElement.getElementsByTagName('body');
 
-    // Check for the Safari 10.1 bug - which allows JS to run inside the SVG G element
-    inertBodyElement.innerHTML = '<svg><g onload="this.parentNode.remove()"></g></svg>';
-    if (!inertBodyElement.querySelector('svg')) {
-      return getInertBodyElement_XHR;
+    // usually there should be only one body element in the document, but IE doesn't have any, so we need to create one
+    if (bodyElements.length === 1) {
+      inertBodyElement = bodyElements[0];
     } else {
-      // Check for the Firefox bug - which prevents the inner img JS from being sanitized
-      inertBodyElement.innerHTML = '<svg><p><style><img src="</style><img src=x onerror=alert(1)//">';
-      if (inertBodyElement.querySelector('svg img')) {
-        return getInertBodyElement_DOMParser;
-      } else {
-        return getInertBodyElement_InertDocument;
-      }
+      var html = doc.createElement('html');
+      inertBodyElement = doc.createElement('body');
+      html.appendChild(inertBodyElement);
+      doc.appendChild(html);
     }
-
-    function getInertBodyElement_XHR(html) {
-      // We add this dummy element to ensure that the rest of the content is parsed as expected
-      // e.g. leading whitespace is maintained and tags like `<meta>` do not get hoisted to the `<head>` tag.
-      html = '<remove></remove>' + html;
-      try {
-        html = encodeURI(html);
-      } catch (e) {
-        return undefined;
-      }
-      var xhr = new window.XMLHttpRequest();
-      xhr.responseType = 'document';
-      xhr.open('GET', 'data:text/html;charset=utf-8,' + html, false);
-      xhr.send(null);
-      var body = xhr.response.body;
-      body.firstChild.remove();
-      return body;
-    }
-
-    function getInertBodyElement_DOMParser(html) {
-      // We add this dummy element to ensure that the rest of the content is parsed as expected
-      // e.g. leading whitespace is maintained and tags like `<meta>` do not get hoisted to the `<head>` tag.
-      html = '<remove></remove>' + html;
-      try {
-        var body = new window.DOMParser().parseFromString(html, 'text/html').body;
-        body.firstChild.remove();
-        return body;
-      } catch (e) {
-        return undefined;
-      }
-    }
-
-    function getInertBodyElement_InertDocument(html) {
-      inertBodyElement.innerHTML = html;
-
-      // Support: IE 9-11 only
-      // strip custom-namespaced attributes on IE<=11
-      if (document.documentMode) {
-        stripCustomNsAttrs(inertBodyElement);
-      }
-
-      return inertBodyElement;
-    }
-  })(window, window.document);
+  })(window);
 
   /**
    * @example
@@ -58058,9 +58008,7 @@ function $SanitizeProvider() {
     } else if (typeof html !== 'string') {
       html = '' + html;
     }
-
-    var inertBodyElement = getInertBodyElement(html);
-    if (!inertBodyElement) return '';
+    inertBodyElement.innerHTML = html;
 
     //mXSS protection
     var mXSSAttempts = 5;
@@ -58070,9 +58018,12 @@ function $SanitizeProvider() {
       }
       mXSSAttempts--;
 
-      // trigger mXSS if it is going to happen by reading and writing the innerHTML
-      html = inertBodyElement.innerHTML;
-      inertBodyElement = getInertBodyElement(html);
+      // strip custom-namespaced attributes on IE<=11
+      if (window.document.documentMode) {
+        stripCustomNsAttrs(inertBodyElement);
+      }
+      html = inertBodyElement.innerHTML; //trigger mXSS
+      inertBodyElement.innerHTML = html;
     } while (html !== inertBodyElement.innerHTML);
 
     var node = inertBodyElement.firstChild;
@@ -58253,7 +58204,7 @@ function sanitizeText(chars) {
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', [])
   .provider('$sanitize', $SanitizeProvider)
-  .info({ angularVersion: '1.6.5' });
+  .info({ angularVersion: '1.6.4' });
 
 /**
  * @ngdoc filter
@@ -58455,7 +58406,7 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -58728,7 +58679,7 @@ angular.module('ngMessages', [], function initAngularHelpers() {
   isString = angular.isString;
   jqLite = angular.element;
 })
-  .info({ angularVersion: '1.6.5' })
+  .info({ angularVersion: '1.6.4' })
 
   /**
    * @ngdoc directive
@@ -59196,7 +59147,7 @@ function ngMessageDirectiveFactory() {
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -59639,7 +59590,7 @@ function shallowClearAndCopy(src, dst) {
  *
  */
 angular.module('ngResource', ['ng']).
-  info({ angularVersion: '1.6.5' }).
+  info({ angularVersion: '1.6.4' }).
   provider('$resource', function ResourceProvider() {
     var PROTOCOL_AND_IPV6_REGEX = /^https?:\/\/\[[^\]]*][^/]*/;
 
@@ -60055,7 +60006,7 @@ angular.module('ngResource', ['ng']).
 })(window, window.angular);
 
 /**
- * @license AngularJS v1.6.5
+ * @license AngularJS v1.6.4
  * (c) 2010-2017 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -60115,7 +60066,7 @@ var noop;
 /* global -ngRouteModule */
 var ngRouteModule = angular.
   module('ngRoute', []).
-  info({ angularVersion: '1.6.5' }).
+  info({ angularVersion: '1.6.4' }).
   provider('$route', $RouteProvider).
   // Ensure `$route` will be instantiated in time to capture the initial `$locationChangeSuccess`
   // event (unless explicitly disabled). This is necessary in case `ngView` is included in an

@@ -15,12 +15,30 @@ class ComposerStaticInit689bb94ed241e7d819ff088059c55bf9
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'E' => 
+        array (
+            'Egulias\\EmailValidator\\' => 23,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'Egulias\\EmailValidator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Doctrine\\Common\\Lexer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
+            ),
         ),
     );
 
@@ -29,6 +47,7 @@ class ComposerStaticInit689bb94ed241e7d819ff088059c55bf9
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit689bb94ed241e7d819ff088059c55bf9::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit689bb94ed241e7d819ff088059c55bf9::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit689bb94ed241e7d819ff088059c55bf9::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

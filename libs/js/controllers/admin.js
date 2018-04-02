@@ -61,6 +61,7 @@
         })
         .then(function (response) {
           $mdToast.showSimple(response.data.records.datos);
+          load();
         });
     }
     $scope.readUsers = function () {
@@ -104,7 +105,7 @@
           'idCompany': id
         })
         .then(function (response) {
-          $mdToast.showSimple("User Updated");
+          $mdToast.showSimple("Company Updated");
         });
     };
     var load = function () {

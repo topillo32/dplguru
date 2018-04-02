@@ -29,29 +29,72 @@ class Email {
         "desde" => $this->username,
         "a" => $this->email,
       ));
-      $transport = Swift_SmtpTransport::newInstance('mail.dplguru.com', '465', 'ssl')->setUsername($this->username)->setPassword($this->password);
-      $mailer = Swift_Mailer::newInstance($transport);
+
+      $transport = (new Swift_SmtpTransport('mail.dplguru.com', '465', 'ssl'))
+        ->setUsername($this->username)
+        ->setPassword($this->password);
+
+      $mailer = new Swift_Mailer($transport);
+
       if (isset($this->file)) {
-        $message = Swift_Message::newInstance($this->asunto)->setFrom(array(
-          $this->username => $this->razonSocialEnvia,
-        ))->setTo(array(
-          $this->email => $this->razonSocialRecibe,
-        ))->setBody($this->mensaje)->addPart($this->mensaje, 'text/html')->attach(Swift_Attachment::fromPath($this->file));
+
+        $message =  (new Swift_Message($this->asunto))
+          ->setFrom(array($this->username => $this->razonSocialEnvia,))
+          ->setTo(array($this->email => $this->razonSocialRecibe,))
+          ->setBody($this->mensaje)
+          ->addPart($this->mensaje, 'text/html')
+          ->attach(Swift_Attachment::fromPath($this->file));
+
+          echo json_encode(array(
+          "Estado" => "Enviando con file",
+          "mensaje" => $message,
+          "de" => $this->razonSocialEnvia,
+          "a" => $this->razonSocialRecibe,
+          ));
+
+        $result = $mailer->send($message);
+
+        if ($mailer->send($message)) {
+          return true;
+          echo json_encode(array(
+          "Estado" => "Enviado",
+          ));
+        }
+        return false;
+        
       } else {
-        $message = Swift_Message::newInstance($this->asunto)->setFrom(array(
-          $this->username => $this->razonSocialEnvia,
-        ))->setTo(array(
-          $this->email => $this->razonSocialRecibe,
-        ))->setBody($this->mensaje)->addPart($this->mensaje, 'text/html');
+        $message =  (new Swift_Message($this->asunto))
+          ->setFrom(array($this->username => $this->razonSocialEnvia,))
+          ->setTo(array($this->email => $this->razonSocialRecibe,))
+          ->setBody($this->mensaje)
+          ->addPart($this->mensaje, 'text/html');
+
+          echo json_encode(array(
+          "Estado" => "Enviando sin file",
+          "mensaje" => $this->asunto,
+          "de" => $this->razonSocialEnvia,
+          "a" => $this->razonSocialRecibe,
+          ));
+
+        $result = $mailer->send($message);
+
+        echo json_encode(array(
+          "Estado" => "waaaaaaaaaat",
+          ));
+
+        if ($mailer->send($message)) {
+          return true;
+          echo json_encode(array(
+          "Estado" => "Enviado",
+          ));
+        }else{
+          echo json_encode(array(
+          "Estado" => "no enviado",
+          ));
+        }
+
+        return false;
       }
-      if ($mailer->send($message)) {
-        return true;
-      }
-      return false; 
-      
-      echo json_encode(array(
-        "Estado" => "Enviado",
-      ));
 
     } catch (Exception $e) {
       return $e->getMessage();

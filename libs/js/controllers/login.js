@@ -26,7 +26,7 @@
           if (res.data.code === 0) {
             store.set('token', res.data.response.token);
             $scope.tokendata = jwtHelper.decodeToken(res.data.response.token);
-            $mdToast.showSimple("Wrong Login");
+            $mdToast.showSimple("Welcome");
             //$window.location.href = "/usa/#/search";
             $location.path("/index");
             $scope.$on('$locationChangeSuccess', function () {
@@ -34,7 +34,7 @@
             });
           }
           else {
-            $mdToast.showSimple(res.data.error);
+            $mdToast.showSimple("Something wrong with your credentials");
           }
         });
     };
@@ -57,18 +57,20 @@
       }
     }
     $scope.changePassLogin = function (passwd) {
+      console.log(passwd);
       if (passwd.oldPassword === passwd.newPassword) {
         $mdToast.showSimple("New and old password don't have to be the same");
       }
       else {
         if (passwd.newPassword === passwd.confPassword) {
           /* Compraracion de claves */
-          if ($scope.password !== "") {
+          if (passwd.newPassword !== "") {
             $http.post('./consultas/login/changePassword.php', {
                 'email': $rootScope.email,
                 'password': passwd.newPassword
               })
               .then(function (data) {
+                console.log(data.data);
                 if (data.data.code === 0) {
                   $mdToast.showSimple("The password has been successfully updated");
                   $window.location.reload();
@@ -96,17 +98,17 @@
           $mdToast.showSimple("New password has been sent to your email");
         })
         .catch(function (email) {
-          $mdToast.showSimple("Write you e-mail");
+          $mdToast.showSimple("Something wrong with your email");
         });
     }
     /* Cambio de clave */
     var token = $routeParams.token;
     var idpersona = $routeParams.id;
-    $scope.estado = "Desactivado";
+    $scope.estado = "Deactivated";
     if (token) {
       $scope.tokendata = jwtHelper.decodeToken(token);
       if (!isNaN(idpersona)) {
-        $scope.estado = "Activo";
+        $scope.estado = "Active";
         $scope.idUser = idpersona;
         $scope.keySecret = $scope.tokendata.aud;
       }

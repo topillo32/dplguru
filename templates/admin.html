@@ -65,7 +65,7 @@
               </td>
               <td md-cell>
                 <md-input-container>
-                  <md-select ng-model="user.company">
+                  <md-select ng-model="user.company" aria-label="Company">
                     <md-option ng-value="emp.idCompany" ng-selected="$last" ng-repeat="emp in empresaSel track by $index">{{emp.company}}</md-option>
                   </md-select>
                 </md-input-container>
@@ -135,7 +135,7 @@
             <td md-cell>{{c.street}}</td>
             <td md-cell>{{c.phone}}</td>
             <td md-cell ng-init="enabledE = c.activo == 1? true : false">
-              <md-switch class="md-secondary" ng-model="enabledE" ng-change="updateActivoEmpresa(enabledE,c.idCompany) aria-label="Estado""></md-switch>
+              <md-switch class="md-secondary" ng-model="enabledE" ng-change="updateActivoEmpresa(enabledE,c.idCompany)" aria-label="Estado"></md-switch>
             </td>
           </tr>
         </tbody>
@@ -167,7 +167,7 @@
                   <h3>Title</h3>
                 </td>
                 <td md-cell>
-                  <md-input-container class="md-block" flex-gt-xs> <input name="titulo" type="text" ng-model="empr.titulo" placeholder="Enter your Titulo"> </md-input-container>
+                  <md-input-container class="md-block" flex-gt-xs> <input name="titulo" type="text" ng-model="empr.titulo" placeholder="Enter your title"> </md-input-container>
                 </td>
               </tr>
               <tr>
@@ -192,7 +192,7 @@
                 </td>
                 <td md-cell>
                   <md-input-container>
-                    <md-select ng-model="empr.country" data-md-container-class="selectd md-cell emoSelectHeader">
+                    <md-select ng-model="empr.country" data-md-container-class="selectd md-cell emoSelectHeader" aria-label="Country">
                       <md-option ng-repeat="c in country" ng-value="c.code" ng-selected="$first">{{c.name}}</md-option>
                     </md-select>
                   </md-input-container>

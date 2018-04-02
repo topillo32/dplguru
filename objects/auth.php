@@ -47,7 +47,7 @@ class Auth {
 			}
 			return '{"code": 1, "error": "User not found"}';
 		}
-		return '{"code": 1, "error": "Suspended Company"}';
+		return '{"code": 1, "error": "Account not found"}';
 	}
 
 	protected function unlock() {
