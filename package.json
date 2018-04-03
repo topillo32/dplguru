@@ -23,6 +23,7 @@
     "angular-storage": "0.0.15",
     "gulp-jsbeautifier": "^2.1.0",
     "lodash": "^4.17.4",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "paging": "^0.4.0"
   }
 }

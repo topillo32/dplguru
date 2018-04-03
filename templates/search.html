@@ -64,6 +64,12 @@
     </md-list>
     <h1 ng-if="greeting && great == 0"> No matches founds </h1>
     <div flex-offset="20">
+          <div paging
+            page="35" 
+            page-size="10" 
+            total="1000"
+            paging-action="foo('bar', page)">
+          </div> 
       <md-button class="btn" ng-show="great != 0  && greetingTotal" ng-disabled="currentPage == 0" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,1)"> Previous </md-button> <a ng-show="great != 0 && greetingTotal">
               <b>{{page + 1 }}/{{greetingTotal}}</b>
           </a>

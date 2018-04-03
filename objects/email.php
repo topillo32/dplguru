@@ -24,77 +24,30 @@ class Email {
 
   public function enviar() {
     try {
-      echo json_encode(array(
-        "Estado" => "Enviando",
-        "desde" => $this->username,
-        "a" => $this->email,
-      ));
 
-      $transport = (new Swift_SmtpTransport('mail.dplguru.com', '465', 'ssl'))
-        ->setUsername($this->username)
-        ->setPassword($this->password);
-
-      $mailer = new Swift_Mailer($transport);
-
-      if (isset($this->file)) {
-
-        $message =  (new Swift_Message($this->asunto))
-          ->setFrom(array($this->username => $this->razonSocialEnvia,))
-          ->setTo(array($this->email => $this->razonSocialRecibe,))
-          ->setBody($this->mensaje)
-          ->addPart($this->mensaje, 'text/html')
-          ->attach(Swift_Attachment::fromPath($this->file));
-
-          echo json_encode(array(
-          "Estado" => "Enviando con file",
-          "mensaje" => $message,
-          "de" => $this->razonSocialEnvia,
-          "a" => $this->razonSocialRecibe,
-          ));
-
-        $result = $mailer->send($message);
-
-        if ($mailer->send($message)) {
-          return true;
-          echo json_encode(array(
-          "Estado" => "Enviado",
-          ));
-        }
-        return false;
+        $FROM_EMAIL = $this->username;//$this->razonSocialEnvia;
+        // they dont like when it comes from @gmail, prefers business emails
+        $TO_EMAIL = $this->email;//$this->razonSocialRecibe;
+        // Try to be nice. Take a look at the anti spam laws. In most cases, you must
+        // have an unsubscribe. You also cannot be misleading.
+        $subject = $this->asunto;
+        $from = new SendGrid\Email(null, $FROM_EMAIL);
+        $to = new SendGrid\Email(null, $TO_EMAIL);
+        $htmlContent = $this->mensaje;
+        // Create Sendgrid content
+        $content = new SendGrid\Content("text/html",$htmlContent);
+        // Create a mail object
+        $mail = new SendGrid\Mail($from, $subject, $to, $content);
         
-      } else {
-        $message =  (new Swift_Message($this->asunto))
-          ->setFrom(array($this->username => $this->razonSocialEnvia,))
-          ->setTo(array($this->email => $this->razonSocialRecibe,))
-          ->setBody($this->mensaje)
-          ->addPart($this->mensaje, 'text/html');
-
-          echo json_encode(array(
-          "Estado" => "Enviando sin file",
-          "mensaje" => $this->asunto,
-          "de" => $this->razonSocialEnvia,
-          "a" => $this->razonSocialRecibe,
-          ));
-
-        $result = $mailer->send($message);
-
-        echo json_encode(array(
-          "Estado" => "waaaaaaaaaat",
-          ));
-
-        if ($mailer->send($message)) {
-          return true;
-          echo json_encode(array(
-          "Estado" => "Enviado",
-          ));
-        }else{
-          echo json_encode(array(
-          "Estado" => "no enviado",
-          ));
+        $sg = new \SendGrid('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');
+        $response = $sg->client->mail()->send()->post($mail);
+            
+        if ($response->statusCode() == 202) {
+          // Successfully sent
+          echo 'done';
+        } else {
+          echo 'false';
         }
-
-        return false;
-      }
 
     } catch (Exception $e) {
       return $e->getMessage();
