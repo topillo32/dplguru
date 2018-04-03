@@ -61,19 +61,21 @@
           <p ng-repeat="galt in g.alt_names"> - {{galt}}</p>
         </div>
       </md-list-item>
-    </md-list>
+    </md-list>   
+
     <h1 ng-if="greeting && great == 0"> No matches founds </h1>
-    <div flex-offset="20">
-          <div paging
-            page="35" 
-            page-size="10" 
-            total="1000"
-            paging-action="foo('bar', page)">
-          </div> 
-      <md-button class="btn" ng-show="great != 0  && greetingTotal" ng-disabled="currentPage == 0" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,1)"> Previous </md-button> <a ng-show="great != 0 && greetingTotal">
-              <b>{{page + 1 }}/{{greetingTotal}}</b>
-          </a>
-      <md-button class="btn" ng-show="great != 0 && greetingTotal" ng-disabled="currentPage >= greetingTotal - 1" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,2)"> Next </md-button>
+
+      <div>
+        Page: {{page }}
+        <ul class="pagination">
+          <li ng-class="page == 0 ? 'page-item disabled' : 'page-item'" ng-show="great != 0  && greetingTotal" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,page-1)"><a href="">Previous</a></li>
+
+
+          <li ng-class="page == $index ? 'page-item active' : 'page-item'" ng-repeat="g in greeting"><a href="" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,$index)">{{$index+1}}</a></li>
+
+          <li ng-class="page >= greetingTotal - 1 ? 'page-item disabled' : 'page-item'" ng-show="great != 0 && greetingTotal" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,page+1)"><a href="">Next</a></li>
+        </ul>
+      </div> 
     </div>
   </div>
 </md-content>
