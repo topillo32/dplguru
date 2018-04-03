@@ -39,7 +39,7 @@ class Email {
         // Create a mail object
         $mail = new SendGrid\Mail($from, $subject, $to, $content);
         
-        $sg = new \SendGrid('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');
+        $sg = new \SendGrid('coloca aqui tu apikey de sendmail');
         $response = $sg->client->mail()->send()->post($mail);
             
         if ($response->statusCode() == 202) {
