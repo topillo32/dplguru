@@ -482,13 +482,25 @@ angular.module('app')
     $scope.filtroSearch = '&name=';
     $scope.currentPage = 0;
     $scope.page=0;
+    $scope.greeting=0;
     var datoSearch;
     $scope.mostrarDetallado = function (ev, searchArray) {
       $scope.showDialog(ev, searchArray);
     };
     $scope.previousNext = function (a, b, c, d, e, f, val) { 
-      $scope.currentPage = val;
-      $scope.page = $scope.currentPage;
+      console.log($scope.greeting.length-1);
+      if(val == $scope.greeting.length ){
+        $scope.currentPage = $scope.greeting.length;
+        $scope.page = $scope.currentPage;
+      }
+      if(val < 0){
+        $scope.currentPage = 0;
+        $scope.page = $scope.currentPage;
+      }
+      else{
+        $scope.currentPage = val;
+        $scope.page = $scope.currentPage;
+      }
 
       console.log(val);
       console.log($scope.page);
