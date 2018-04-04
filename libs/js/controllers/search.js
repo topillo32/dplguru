@@ -23,6 +23,8 @@
     $scope.currentPage = 0;
     $scope.page = 0;
     $scope.greeting = 0;
+    $scope.greetingTotal=0;
+    $scope.pages=0;
     $scope.data = {
       someModel : ""
     };
@@ -30,23 +32,23 @@
     $scope.mostrarDetallado = function(ev, searchArray) {
       $scope.showDialog(ev, searchArray);
     };
+    $scope.getNumber = function() {
+        $scope.number = $scope.greetingTotal;
+        return new Array($scope.number);   
+    }
     $scope.previousNext = function(a, b, c, d, e, f, val) {
-      // console.log($scope.greeting.length - 1);
-      if (val == $scope.greeting.length) {
-        $scope.currentPage = $scope.greeting.length;
+      var newVal = $scope.greetingTotal;
+      if (val == newVal) {
+        $scope.currentPage = (val-1);
         $scope.page = $scope.currentPage;
       }
-      if (val < 0) {
+      else if (val < 0) {
         $scope.currentPage = 0;
         $scope.page = $scope.currentPage;
       } else {
         $scope.currentPage = val;
         $scope.page = $scope.currentPage;
       }
-
-      // console.log(val);
-      // console.log($scope.page);
-      // console.log($scope.currentPage);
       $scope.traeDatosAdvance(a, b, c, d, e, f);
 
     };
