@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
   angular.module('app')
     .factory('PagerService', PagerService)
@@ -21,80 +21,76 @@
     $scope.advanceButon = "1";
     $scope.filtroSearch = '&name=';
     $scope.currentPage = 0;
-    $scope.page=0;
-    $scope.greeting=0;
+    $scope.page = 0;
+    $scope.greeting = 0;
+    $scope.data = {
+      someModel : ""
+    };
     var datoSearch;
-    $scope.mostrarDetallado = function (ev, searchArray) {
+    $scope.mostrarDetallado = function(ev, searchArray) {
       $scope.showDialog(ev, searchArray);
     };
-    $scope.previousNext = function (a, b, c, d, e, f, val) { 
-      console.log($scope.greeting.length-1);
-      if(val == $scope.greeting.length ){
+    $scope.previousNext = function(a, b, c, d, e, f, val) {
+      // console.log($scope.greeting.length - 1);
+      if (val == $scope.greeting.length) {
         $scope.currentPage = $scope.greeting.length;
         $scope.page = $scope.currentPage;
       }
-      if(val < 0){
+      if (val < 0) {
         $scope.currentPage = 0;
         $scope.page = $scope.currentPage;
-      }
-      else{
+      } else {
         $scope.currentPage = val;
         $scope.page = $scope.currentPage;
       }
 
-      console.log(val);
-      console.log($scope.page);
-      console.log($scope.currentPage);
+      // console.log(val);
+      // console.log($scope.page);
+      // console.log($scope.currentPage);
       $scope.traeDatosAdvance(a, b, c, d, e, f);
 
     };
-    $scope.traeDatosAdvance = function (a, b, c, d, e, f) {
+    $scope.traeDatosAdvance = function(a, b, c, d, e, f) {
       if (a || b || c || d || e || f) {
         delete $http.defaults.headers.common;
         delete $scope.greeting;
         var term, typeEntry, nombre, address, pais, depar, term1, typeEntry1, nombre1, address1, pais1, depar1;
         if (!a) {
           term = "";
-        }
-        else {
+        } else {
           term = "&q=" + a;
         }
         if (!b) {
           typeEntry = "";
-        }
-        else {
+        } else {
           typeEntry = "&type=" + b;
         }
         if (!c) {
           nombre = "";
-        }
-        else {
+        } else {
           nombre = "&name=" + c;
         }
         if (!d) {
           address = "";
-        }
-        else {
+        } else {
           address = "&address=" + d;
         }
         if (!e) {
           pais = "";
-        }
-        else {
+        } else {
           pais = "&countries=" + e;
         }
         if (!f) {
           depar = "";
-        }
-        else {
+        } else {
           depar = "&sources=" + f;
         }
         $http.get(serverUrl + "&offset=" + $scope.currentPage * 10 + term + typeEntry + nombre + address + pais + depar + "&fuzzy_name=true&sort=name:desc")
-          .then(function (response) {
+          .then(function(response) {
             $scope.greeting = response.data.results;
             $scope.great = response.data.total;
             $scope.greetingTotal = Math.round(parseInt(response.data.total) / 10);
-            console.log(response.data.results);
+            // console.log(response.data.results);
             $scope.contadorMatches = 0;
             for (var i = 0; i < $scope.greeting.length; i++) {
               $scope.contadorMatches = $scope.contadorMatches + 1;
@@ -114,23 +110,22 @@
                 'address': d ? d : "",
                 'matches': $scope.contadorMatches
               })
-              .then(function (data) {
+              .then(function(data) {
                 $mdToast.showSimple("Search's Registered");
               });
           });
-      }
-      else {
+      } else {
         $mdToast.showSimple("You must enter some data in the fields");
       }
     };
-    $scope.clearSearchTerm = function () {
+    $scope.clearSearchTerm = function() {
       $scope.botonhide = 'false';
       $scope.searchTerm = '';
     };
-    $scope.vg = function (ev) {
+    $scope.vg = function(ev) {
       ev.stopPropagation();
     };
-    $scope.showDialog = function (ev, searchArray) {
+    $scope.showDialog = function(ev, searchArray) {
       $mdDialog.show({
         controller: dialogCtrl,
         templateUrl: 'templates/showMore.html',
@@ -145,38 +140,43 @@
     };
 
     function dialogCtrl($scope, $mdDialog, locals) {
-      $scope.cancel = function () {
+      $scope.cancel = function() {
         $mdDialog.cancel();
       };
       $scope.country = paises.country();
       $scope.searchDetalle = [];
       $scope.searchDetalle.push(locals.searchArray);
-      $scope.muestraDocumento = function (name) {
+      $scope.muestraDocumento = function(name) {
         var query = "https://www.federalregister.gov/api/v1/documents.json?fields%5B%5D=publication_date&fields%5B%5D=start_page&fields%5B%5D=volume&per_page=20&order=relevance&conditions%5Bterm%5D=";
         var query2 = query + name.replace(" ", "%20") + "&conditions%5Btype%5D%5B%5D=NOTICE";
         var trustedUrl = $sce.trustAsResourceUrl(query2);
         $http.jsonp(trustedUrl)
-          .then(function (response) {
+          .then(function(response) {
             $scope.fdr = response.data.results;
           });
       };
       $scope.muestraDocumento($scope.searchDetalle[0].name.replace(/[^a-zA-Z 0-9.]+/g, ''));
-      $scope.fechaAjust = function (fecha) {
+      $scope.fechaAjust = function(fecha) {
         var arregloDeSubCadenas = fecha.split("-");
         var fechanueva = arregloDeSubCadenas[1] + "/" + arregloDeSubCadenas[2] + "/" + arregloDeSubCadenas[0]
         return fechanueva;
       };
     };
-    $scope.paginate = function () {
+    $scope.paginate = function() {
       $scope.muestraSearches($scope.currentNavItem);
     }
-    $scope.muestraSearches = function (val) {
+    $scope.muestraSearches = function(val) {
+      $scope.query = {
+        order: 'name',
+        limit: 10,
+        page: 1
+      };
       if (val == "2") {
         $http.post('consultas/busquedas/contador.php', {
             'opcion': 2,
             'idUser': $rootScope.idUser
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.contador = response.data.records[0].contador;
           });
         $http.post('consultas/busquedas/read_all_search.php', {
@@ -184,19 +184,18 @@
             'page': $scope.query.page,
             'limit': $scope.query.limit
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.myListSearch = response.data.records;
           })
-          .catch(function (response) {
+          .catch(function(response) {
             $scope.myListSearch = [];
           });
-      }
-      else if (val == "3") {
+      } else if (val == "3") {
         $http.post('consultas/busquedas/contador.php', {
             'opcion': 3,
             'idUser': $rootScope.idUser
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.contador = response.data.records[0].contador;
           });
         $http.post('consultas/busquedas/read_by_empresas.php', {
@@ -204,37 +203,31 @@
             'page': $scope.query.page,
             'limit': $scope.query.limit
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.myListSearch = response.data.records;
           })
-          .catch(function (response) {
+          .catch(function(response) {
             $scope.myListSearch = [];
           });
-      }
-      else if (val == "4") {
+      } else if (val == "4") {
         $http.post('consultas/busquedas/contador.php', {
             'opcion': 1
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.contador = response.data.records[0].contador;
           });
         $http.post('consultas/busquedas/read_all.php', $scope.query)
-          .then(function (response) {
+          .then(function(response) {
             $scope.myListSearch = response.data.records;
           })
-          .catch(function (response) {
+          .catch(function(response) {
             $scope.myListSearch = [];
           });
-      }
-      else if (val == "5") {
-        $http.get('consultas/busquedas/contadorEmpresas.php')
-          .then(function (response) {
-            $scope.contador2 = response.data.records;
-          });
+      } else if (val == "5") {
         $http.post('consultas/busquedas/read_search_empresa.php', {
             query: $scope.query2
           })
-          .then(function (response) {
+          .then(function(response) {
             $scope.myListSearch2 = response.data.records;
             for (var i = 0; i < response.data.records.length; i++) {
               $scope.query2.push({
@@ -246,26 +239,47 @@
           });
       }
     }
-    $scope.muestraAllList = function () {
+    $scope.changeEmpresa = function(){
+      // console.log($scope.query.page);
+      $scope.variableprueba = $scope.data.someModel;
+      $http.post('consultas/busquedas/contadorByComp.php',{
+        'idUser' : $scope.data.someModel
+      })
+        .then(function (response) {
+          $scope.contador2 = response.data.records;
+          $scope.contadorPagination = parseInt($scope.contador2[0].contador);
+          // console.log($scope.contadorPagination);
+        });
+      $http.post('consultas/busquedas/read_search_company.php',{
+        'idUser' : $scope.data.someModel,
+        'page': $scope.query.page,
+        'limit': $scope.query.limit
+      })
+      .then(function(response){
+        $scope.search_company = response.data.records;
+        // console.log(response.data.records);
+      });
+    }
+    $scope.muestraAllList = function() {
       $http.post('consultas/busquedas/contador.php', {
           'opcion': 1
         })
-        .then(function (response) {
+        .then(function(response) {
           $scope.contador = response.data.records[0].contador;
         });
       $http.post('consultas/busquedas/read_all.php', $scope.query)
-        .then(function (response) {
+        .then(function(response) {
           $scope.myListSearch = response.data.records;
         });
     }
-    $scope.paisNombre = function (val) {
-      var nombre = _.find(paises.country(), function (o) {
+    $scope.paisNombre = function(val) {
+      var nombre = _.find(paises.country(), function(o) {
         return o.code == val;
       });
       return nombre ? nombre.name : "-";
     }
-    $scope.sourceNombre = function (val) {
-      var nombre = _.find(paises.sources(), function (o) {
+    $scope.sourceNombre = function(val) {
+      var nombre = _.find(paises.sources(), function(o) {
         return o.code == val;
       });
       return nombre ? nombre.name : "-";
@@ -313,18 +327,15 @@
         // less than 10 total pages so show all
         startPage = 1;
         endPage = totalPages;
-      }
-      else {
+      } else {
         // more than 10 total pages so calculate start and end pages
         if (currentPage <= 6) {
           startPage = 1;
           endPage = 10;
-        }
-        else if (currentPage + 4 >= totalPages) {
+        } else if (currentPage + 4 >= totalPages) {
           startPage = totalPages - 9;
           endPage = totalPages;
-        }
-        else {
+        } else {
           startPage = currentPage - 5;
           endPage = currentPage + 4;
         }

@@ -107,7 +107,25 @@ class Search {
 		return FALSE;
 	}
 
+	public function contadorByCompany(){
+			$query = "SELECT COUNT(s.idSearche) as contador FROM search s INNER JOIN usuarios u ON u.idUser = s.idUser WHERE u.idCompany = :idUser";
+	  	$stmt = $this->conn->prepare($query);
+			$stmt->bindParam(":idUser", $this->idUser);
+			if ($stmt->execute()) {
+				return $stmt;
+			}
+			return FALSE;
+		}
 
+	public function searchByEmpresa(){
+		$query = "SELECT s.term,s.name,s.address,s.country,s.type,s.source,s.matches,s.date, u.userName,u.email FROM search s INNER JOIN usuarios u ON u.idUser = s.idUser WHERE u.idCompany = :idUser LIMIT ".$this->start." , ".$this->limit;
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindParam(":idUser", $this->idUser);
+		if ($stmt->execute()) {
+			return $stmt;
+		}
+		return FALSE;
+	}
 
 	private function nullify($property) {
 		if ($property == "") {
