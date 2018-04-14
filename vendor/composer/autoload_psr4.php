@@ -9,5 +9,4 @@ return array(
     'SendGrid\\' => array($vendorDir . '/sendgrid/php-http-client/lib'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
-    'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/EmailValidator'),
 );
