@@ -1,4 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 require_once dirname(__DIR__) . '\vendor\autoload.php';
 
@@ -14,46 +16,44 @@ class Email {
 	public $mensaje;
 
 	public function __construct($alias) {
-    echo json_encode(array(
-        "Donde estoy" => "en EMAIL()",
-    ));
-		$this->username = $alias . '@dplguru.com';
-		$this->password = 'L@h)Mh^,5WiC';
+		$this->username = 'dplgurupwd@gmail.com';
+		$this->password = 'dplguru1234';
 		$this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
 	}
 
   public function enviar() {
-    try {
 
-        $FROM_EMAIL = $this->username;//$this->razonSocialEnvia;
-        // they dont like when it comes from @gmail, prefers business emails
-        $TO_EMAIL = $this->email;//$this->razonSocialRecibe;
-        // Try to be nice. Take a look at the anti spam laws. In most cases, you must
-        // have an unsubscribe. You also cannot be misleading.
-        $subject = $this->asunto;
-        $from = new SendGrid\Email(null, $FROM_EMAIL);
-        $to = new SendGrid\Email(null, $TO_EMAIL);
-        $htmlContent = $this->mensaje;
-        // Create Sendgrid content
-        $content = new SendGrid\Content("text/html",$htmlContent);
-        // Create a mail object
-        $mail = new SendGrid\Mail($from, $subject, $to, $content);
-        
-        $sg = new \SendGrid('coloca aqui tu apikey de sendmail');
-        $response = $sg->client->mail()->send()->post($mail);
-            
-        if ($response->statusCode() == 202) {
-          // Successfully sent
-          echo 'done';
-        } else {
-          echo 'false';
-        }
 
-    } catch (Exception $e) {
-      return $e->getMessage();
-      echo json_encode(array(
-        "Estado" => "Entre a catch",
-      ));
-    }
+		$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+		try {
+		    $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+		    $mail->isSMTP();                                      // Set mailer to use SMTP
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+						)
+				);
+		    $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+		    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+		    $mail->Username = $this->username;                 // SMTP username
+		    $mail->Password = $this->password;                           // SMTP password
+		    $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		    $mail->Port = 587;                                    // TCP port to connect to
+		    //Recipients
+		    $mail->setFrom($this->username, 'DPLGURU');
+		    $mail->addAddress($this->email, $this->razonSocialRecibe);     // Add a recipient
+		    $mail->isHTML(true);                                  // Set email format to HTML
+		    $mail->Subject = $this->asunto;
+		    $mail->Body    = $this->mensaje;
+		    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+		    $mail->send();
+		    echo 'Message has been sent';
+		} catch (Exception $e) {
+		    echo 'Message could not be sent.';
+		    echo 'Mailer Error: ' . $mail->ErrorInfo;
+		}
   }
 }

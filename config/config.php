@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', 'localhost');
 define('DB_UNICA', 'dplguru_global');
-define('DB_USERNAME', 'dplguru_global');
-define('DB_PASSWORD', 'a4u#[9s9,&Z^');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'contal1234');
 define('HASH_KEY', 'j3Y8XY7ah7HbJaKW5kvz96CSGXK20kRd');
 define('SALT_KEY', 'jKsYIAZ9b9R3DA9xqlsWw66cB19j0U51');
 define('TOKEN_KEY', '96crW7614WVv39E4y4hmtww3ptGKHzHN');
