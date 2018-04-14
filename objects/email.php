@@ -26,7 +26,7 @@ class Email {
 
 		$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 		try {
-		    $mail->SMTPDebug = 2;                                 // Enable verbose debug output
+		    $mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		    $mail->isSMTP();                                      // Set mailer to use SMTP
 				$mail->SMTPOptions = array(
 						'ssl' => array(
