@@ -40,7 +40,7 @@ class Email {
 		$mail->Port = 587;                                    // TCP port to connect to
 		//Recipients
 		$mail->setFrom($this->username, 'DPLGURU');
-		/*
+
 		$mail->addAddress($this->email, $this->razonSocialRecibe);     // Add a recipient
 		$mail->isHTML(true);                                  // Set email format to HTML
 		$mail->Subject = $this->asunto;
@@ -48,7 +48,7 @@ class Email {
 		// $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 		$mail->send();
-		echo 'Message has been sent';*/
+		echo 'Message has been sent';
 		} catch (Exception $e) {
 				echo 'Message could not be sent.';
 				// echo 'Mailer Error: ' . $mail->ErrorInfo;
