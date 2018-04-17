@@ -1,5 +1,5 @@
 <?php
-// use PHPMailer/PHPMailer/PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 class Email {
