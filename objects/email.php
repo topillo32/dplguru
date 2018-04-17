@@ -1,8 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-require_once dirname(__DIR__) . '\vendor\autoload.php';
 
+require_once dirname(__DIR__) . '\vendor\autoload.php';
 class Email {
   protected $server;
   protected $username;
@@ -13,6 +12,7 @@ class Email {
 	public $file;
 	public $asunto;
 	public $mensaje;
+	$mail = new PHPMailer;
 
 	public function __construct($alias) {
 		$this->username = $alias . '@gmail.com';
@@ -22,7 +22,6 @@ class Email {
 
 	public function enviar() {
 		try {
-			$mail = new PHPMailer;
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
 		$mail->SMTPOptions = array(
