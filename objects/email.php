@@ -22,8 +22,8 @@ class Email {
 	}
 
   public function enviar() {
-
-
+		echo "Entra" . $this->username . "  ":
+/*
 		$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 		try {
 		    $mail->SMTPDebug = 1;                                 // Enable verbose debug output
@@ -54,6 +54,6 @@ class Email {
 		} catch (Exception $e) {
 		    echo 'Message could not be sent.';
 		    echo 'Mailer Error: ' . $mail->ErrorInfo;
-		}
+		}*/
   }
 }
