@@ -1,7 +1,7 @@
 <?php
 // use PHPMailer\PHPMailer\PHPMailer;
 
-require_once dirname(__DIR__) . '\vendor\autoload.php';
+require_once '..\vendor\autoload.php';
 class Email {
   protected $server;
   protected $username;
@@ -21,6 +21,7 @@ class Email {
 	}
 
 	public function enviar() {
+		echo  dirname(__DIR__);
 		/*
 		try {
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
