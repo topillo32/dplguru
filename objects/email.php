@@ -3,7 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once dirname(__DIR__) . '\vendor\autoload.php';
-include_once dirname(__DIR__) . '/autoload.php';
+
 class Email {
 	protected $server;
 	protected $username;
