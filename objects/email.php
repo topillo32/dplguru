@@ -12,7 +12,6 @@ class Email {
 	public $file;
 	public $asunto;
 	public $mensaje;
-	$mail = new PHPMailer;
 
 	public function __construct($alias) {
 		$this->username = $alias . '@gmail.com';
@@ -21,8 +20,7 @@ class Email {
 	}
 
 	public function enviar() {
-
-
+		$mail = new PHPMailer;/*
 		try {
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
@@ -52,6 +50,6 @@ class Email {
 		} catch (Exception $e) {
 				echo 'Message could not be sent.';
 				echo 'Mailer Error: ' . $mail->ErrorInfo;
-		}
+		}*/
 	}
 }
