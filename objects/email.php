@@ -1,5 +1,5 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\PHPMailer;
 
 // require_once dirname(__DIR__) . '\vendor\autoload.php';
 class Email {
@@ -12,7 +12,7 @@ class Email {
 	public $file;
 	public $asunto;
 	public $mensaje;
-	$mail = new PHPMailer;
+	// $mail = new PHPMailer;
 
 	public function __construct($alias) {
 		$this->username = $alias . '@gmail.com';
