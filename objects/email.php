@@ -20,8 +20,9 @@ class Email {
 	}
 
 	public function enviar() {
-		$mail = new PHPMailer;/*
+		$mail = new PHPMailer;
 		try {
+			/*
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
 		$mail->SMTPOptions = array(
@@ -46,10 +47,10 @@ class Email {
 		// $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 		$mail->send();
-		echo 'Message has been sent';
+		echo 'Message has been sent';*/
 		} catch (Exception $e) {
 				echo 'Message could not be sent.';
-				echo 'Mailer Error: ' . $mail->ErrorInfo;
-		}*/
+				// echo 'Mailer Error: ' . $mail->ErrorInfo;
+		}
 	}
 }
