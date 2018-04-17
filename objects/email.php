@@ -1,7 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once dirname(__DIR__) . '\vendor\autoload.php';
+// require_once dirname(__DIR__) . '\vendor\autoload.php';
 class Email {
   protected $server;
   protected $username;
@@ -21,6 +21,7 @@ class Email {
 	}
 
 	public function enviar() {
+		/*
 		try {
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
@@ -51,6 +52,6 @@ class Email {
 				echo 'Message could not be sent.';
 				echo 'Mailer Error: ' . $mail->ErrorInfo;
 		}
-
+*/
 	}
 }
