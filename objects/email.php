@@ -1,6 +1,6 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
 //
 // require_once dirname(__DIR__) . '\vendor\autoload.php';
 
@@ -16,9 +16,9 @@ class Email {
 	public $mensaje;
 
 	public function __construct() {
-		$this->username = 'dplgurupwd@gmail.com';
-		$this->password = 'dplguru1234';
-		$this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
+		// $this->username = 'dplgurupwd@gmail.com';
+		// $this->password = 'dplguru1234';
+		// $this->server = '{170.239.86.173:993/imap/ssl/novalidate-cert}INBOX';
 	}
 
   public function enviar() {
