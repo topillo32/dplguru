@@ -8,8 +8,8 @@ $data = json_decode(file_get_contents("php://input"));
 
 $auth->email = $data->email;
 $users->email = $data->email;
-/*
 if (isset($auth->email) && $auth->email != "") {
+  /*
   	$users->readOne();
 	$tokenuser = $auth->createPassInicial();
 	$mensaje = 'Please click on the following <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> to generate a password';
@@ -23,7 +23,7 @@ if (isset($auth->email) && $auth->email != "") {
 	echo json_encode(array(
 		"code" => 0,
 	));
-
+*/
 } else {
 	echo json_encode(array(
 		"code" => 1,
