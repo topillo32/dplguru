@@ -31,7 +31,7 @@ class Email {
 				'verify_peer_name' => false,
 				'allow_self_signed' => true
 				)
-		);/*
+		);
 		$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 		$mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$mail->Username = $this->username;                 // SMTP username
@@ -40,6 +40,7 @@ class Email {
 		$mail->Port = 587;                                    // TCP port to connect to
 		//Recipients
 		$mail->setFrom($this->username, 'DPLGURU');
+		/*
 		$mail->addAddress($this->email, $this->razonSocialRecibe);     // Add a recipient
 		$mail->isHTML(true);                                  // Set email format to HTML
 		$mail->Subject = $this->asunto;
