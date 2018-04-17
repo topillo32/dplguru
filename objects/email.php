@@ -22,7 +22,7 @@ class Email {
 	public function enviar() {
 		$mail = new PHPMailer;
 		try {
-			/*
+
 		$mail->SMTPDebug = 1;                                 // Enable verbose debug output
 		$mail->isSMTP();                                      // Set mailer to use SMTP
 		$mail->SMTPOptions = array(
@@ -31,7 +31,7 @@ class Email {
 				'verify_peer_name' => false,
 				'allow_self_signed' => true
 				)
-		);
+		);/*
 		$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 		$mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$mail->Username = $this->username;                 // SMTP username
