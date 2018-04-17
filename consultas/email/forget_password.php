@@ -13,8 +13,7 @@ $users->email = $data->email;
   	$users->readOne();
 	$tokenuser = $auth->createPassInicial();
 	$mensaje = 'Please click on the following <a href="https://dplguru.com/#/changepasswd/' . $tokenuser . '/' . $users->idUser . '">link</a> to generate a password';
-	$email = new Email("resetpassword");
-  /*  
+	$email = new Email();    
 	$email->asunto = "Generar clave de usuario";
 	$email->razonSocialRecibe = $users->userName;
 	$email->razonSocialEnvia = "Dplguru";
