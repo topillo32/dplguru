@@ -62,20 +62,15 @@
         </div>
       </md-list-item>
     </md-list>
-
     <h1 ng-if="greeting && great == 0"> No matches founds </h1>
-
-      <div>
-        <ul class="pagination">
-          <li ng-class="page == 0 ? 'page-item disabled' : 'page-item'" ng-show="great != 0  && greetingTotal" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,page-1)"><a href="">Previous</a></button>
-
-
+    <div>
+      <ul class="pagination">
+        <li ng-class="page == 0 ? 'page-item disabled' : 'page-item'" ng-show="great != 0  && greetingTotal" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,page-1)"><a href="">Previous</a></button>
           <li ng-class="page == $index ? 'page-item active' : 'page-item'" ng-repeat="g in getNumber() track by $index"><a href="" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,$index)">{{$index+1}}</a></li>
-
           <li ng-class="page >= greetingTotal ? 'page-item disabled' : 'page-item'" ng-show="great != 0 && greetingTotal" ng-click="previousNext(term,typeEntry,nombre,address,pais,depar,page+1)"><a href="">Next</a></li>
-        </ul>
-      </div>
+      </ul>
     </div>
+  </div>
   </div>
 </md-content>
 <md-card layout="column" flex ng-if="currentNavItem == 2 || currentNavItem == 3 || currentNavItem == 4" flex>
@@ -118,14 +113,13 @@
   </div>
 </md-card>
 <md-card layout="column" ng-if="currentNavItem == 5" flex>
-  <md-input-container>
-    <label>Company</label>
+  <md-input-container> <label>Company</label>
     <md-select ng-model="data.someModel" ng-change="changeEmpresa()">
       <md-option ng-value="opt.idCompany" style="text-align: center" ng-repeat="opt in myListSearch2 track by $index">{{opt.name}} {{opt.idCompany}}</md-option>
     </md-select>
   </md-input-container>
   <!-- <h1>{{search_company}}</h1> -->
-  <md-content layout="column"  flex>
+  <md-content layout="column" flex>
     <md-table-container flex>
       <md-subheader class="md-primary"> <span>Company {{s.name}}</span> </md-subheader>
       <table md-table>
@@ -157,7 +151,7 @@
         </tbody>
       </table>
     </md-table-container>
-    <md-table-pagination md-limit="query.limit" md-limit-options="[10, 50, 100]" md-page="query.page" md-total="{{contadorPagination}}" md-on-paginate="changeEmpresa"  md-page-select></md-table-pagination>
+    <md-table-pagination md-limit="query.limit" md-limit-options="[10, 50, 100]" md-page="query.page" md-total="{{contadorPagination}}" md-on-paginate="changeEmpresa" md-page-select></md-table-pagination>
     <md-divider></md-divider>
   </md-content>
 </md-card>

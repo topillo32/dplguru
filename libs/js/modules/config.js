@@ -70,6 +70,11 @@
             templateUrl: "templates/change.html",
             controller: "loginCtrl"
           })
+          .when("/saveApiKey", {
+            title: 'Validate Api Key',
+            templateUrl: "templates/saveApiKey.html",
+            controller: "validaApiKeyCtrl"
+          })
           .otherwise({
             redirectTo: "/"
           });
