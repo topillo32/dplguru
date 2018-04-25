@@ -636,15 +636,7 @@ angular.module('app')
         return fechanueva;
       };
     };
-    $scope.paginate = function () {
-      $scope.muestraSearches($scope.currentNavItem);
-    }
-    $scope.muestraSearches = function (val) {
-      $scope.query = {
-        order: 'name',
-        limit: 10,
-        page: 1
-      };
+    $scope.muestraSearches = function (val) {      
       if (val == "2") {
         $http.post('consultas/busquedas/contador.php', {
             'opcion': 2,
@@ -715,6 +707,10 @@ angular.module('app')
             }
           });
       }
+    }
+    $scope.paginate = function () {
+      console.log();
+      $scope.muestraSearches($scope.currentNavItem);
     }
     $scope.changeEmpresa = function () {
       // console.log($scope.query.page);
